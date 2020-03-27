@@ -60,6 +60,9 @@ export PLATFORM_SDK=${RDK_TOOLCHAIN_PATH}
 export FSROOT=$RDK_FSROOT_PATH
 export FSROOT_PATH=$RDK_FSROOT_PATH
 
+echo "Disable xStreamer by default"
+export ENABLE_XSTREAMER=false
+
 # parse arguments
 INITIAL_ARGS=$@
 
@@ -238,27 +241,39 @@ function install()
       if [ -f "soc/iav_encoder/src/iav_encoder" ]; then
         cp -R soc/iav_encoder/src/iav_encoder $FSROOT/usr/bin
       fi
-      
-      if [ -f "soc/smartrc/src/smartrc" ]; then
-        cp -R soc/smartrc/src/smartrc $FSROOT/usr/bin
-      fi
     fi
 
-    if [ "$XCAM_MODEL" = "SCHC2" ]; then
-        if [ -f "xaudio/libxaudioapi.so" ]; then
-          cp -R xaudio/libxaudioapi.so $FSROOT_PATH/usr/lib
+    if [ $ENABLE_XSTREAMER == 'true' ]; then
+        echo "xStreamer is enabled, hence skip copying xaudio library and smartrc binary to final image, instead it gets copied from xStreamer repo"
+    else
+        echo "Copying xaudio library to final image"
+        if [ "$XCAM_MODEL" = "SCHC2" ]; then
+            if [ -f "xaudio/libxaudioapi.so" ]; then
+              cp -R xaudio/libxaudioapi.so $FSROOT_PATH/usr/lib
+            fi
+
+            if [ -f "soc/smartrc/src/smartrc" ]; then
+              cp -R soc/smartrc/src/smartrc $FSROOT/usr/bin
+            fi
         fi
     fi
 
     echo "Plugins Installation is done"
 }
 
+function setxStreamer()
+{
+    echo "setxStreamer - Enable xStreamer"
+    export ENABLE_XSTREAMER=true
+}
+
 # run the logic
 #these args are what left untouched after parse_args
 HIT=false
 
-for i in "$ARGS"; do
+for i in "$@"; do
     case $i in
+        enablexStreamer)  HIT=true; setxStreamer ;;
         configure)  HIT=true; configure ;;
         clean)      HIT=true; clean ;;
         build)      HIT=true; build ;;
