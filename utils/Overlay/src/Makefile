@@ -19,6 +19,7 @@
 
 # Add dependent libraries
 USE_CONFIGMGR = yes
+USE_LIBSYSWRAPPER = yes
 
 include ${RDK_PROJECT_ROOT_PATH}/utility/AppsRule.mak
 LIBS = $(LIBFLAGS)
