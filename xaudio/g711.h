@@ -1,44 +1,3 @@
-/**
-##########################################################################
-# If not stated otherwise in this file or this component's LICENSE
-# file the following copyright and licenses apply:
-#
-# Copyright 2019 RDK Management
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-##########################################################################
-**/
-
-/* g711.h - In line A-law and u-law conversion routines
-*
-
-Written by Steve Underwood <steveu@coppice.org>
-*
-Copyright (C) 2001 Steve Underwood
-*
-Despite my general liking of the GPL, I place this code in the
-public domain for the benefit of all mankind - even the slimy
-ones who might try to proprietize my work and use it to my
-detriment.
-*
-$Id: g711.h,v 1.1 2006/06/07 15:46:39 steveu Exp $
-*
-Modifications for WebRtc, 2011/04/28, by tlegrand:
--Changed to use WebRtc types
--Changed _inline_ to __inline
--Two changes to make implementation bitexact with ITU-T reference
-implementation
-*/
 /*
 ##########################################################################
 # If not stated otherwise in this file or this component's LICENSE
@@ -59,6 +18,27 @@ implementation
 # limitations under the License.
 ##########################################################################
 */
+/*
+* g711.h - In line A-law and u-law conversion routines
+*
+* Written by Steve Underwood <steveu@coppice.org>
+*
+* Copyright (C) 2001 Steve Underwood
+*
+*  Despite my general liking of the GPL, I place this code in the
+*  public domain for the benefit of all mankind - even the slimy
+*  ones who might try to proprietize my work and use it to my
+*  detriment.
+*
+* $Id: g711.h,v 1.1 2006/06/07 15:46:39 steveu Exp $
+*
+* Modifications for WebRtc, 2011/04/28, by tlegrand:
+* -Changed to use WebRtc types
+* -Changed __inline__ to __inline
+* -Two changes to make implementation bitexact with ITU-T reference
+* implementation
+*/
+
 /*! \page g711_page A-law and mu-law handling
 Lookup tables for A-law and u-law look attractive, until you consider the impact
 on the CPU cache. If it causes a substantial area of your processor cache to get

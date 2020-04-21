@@ -1,40 +1,3 @@
-/**
-##########################################################################
-# If not stated otherwise in this file or this component's LICENSE
-# file the following copyright and licenses apply:
-#
-# Copyright 2019 RDK Management
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-# http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-##########################################################################
-**/
-
-/* g711.h - In line A-law and u-law conversion routines
-*
-
-Written by Steve Underwood <steveu@coppice.org>
-*
-Copyright (C) 2001 Steve Underwood
-*
-Despite my general liking of the GPL, I place this code in the
-public domain for the benefit of all mankind - even the slimy
-ones who might try to proprietize my work and use it to my
-detriment.
-*
-$Id: g711.h,v 1.1 2006/06/07 15:46:39 steveu Exp $
-*
-*/
-
 /*
 ##########################################################################
 # If not stated otherwise in this file or this component's LICENSE
@@ -55,6 +18,21 @@ $Id: g711.h,v 1.1 2006/06/07 15:46:39 steveu Exp $
 # limitations under the License.
 ##########################################################################
 */
+/*
+* g711.c - A-law and u-law transcoding routines
+*
+* Written by Steve Underwood <steveu@coppice.org>
+*
+* Copyright (C) 2006 Steve Underwood
+*
+*  Despite my general liking of the GPL, I place this code in the
+*  public domain for the benefit of all mankind - even the slimy
+*  ones who might try to proprietize my work and use it to my
+*  detriment.
+*
+* $Id: g711.c,v 1.1 2006/06/07 15:46:39 steveu Exp $
+*/
+
 #include "modules/third_party/g711/g711.h"
 
 /* Copied from the CCITT G.711 specification */
