@@ -118,8 +118,12 @@ function clean()
     cd $RDK_SOURCE_PATH/utils/Overlay
     make clean
 
+
     if [ "$XCAM_MODEL" = "SCHC2" ]; then
         cd $RDK_SOURCE_PATH/xaudio
+        make clean
+
+        cd $RDK_SOURCE_PATH/soc/gdma
         make clean
     fi
 }
@@ -129,6 +133,11 @@ function build()
 {
     configure
     echo "Configure is done"
+
+    if [ "$XCAM_MODEL" == "SCHC2" ]; then
+      cd $RDK_SOURCE_PATH/soc/gdma
+      make
+    fi
 
     cd $RDK_SOURCE_PATH
 
@@ -141,7 +150,7 @@ function build()
       cd iav_encoder
       make 
       cd -
-      
+
       cd smartrc
       make
     fi
@@ -191,6 +200,10 @@ function install()
    
     if [ -f "soc/libhalrtc.so" ]; then
        cp -R soc/libhalrtc.so $FSROOT_PATH/usr/lib
+    fi
+
+    if [ -f "soc/gdma/libgdma.so" ]; then
+       cp -R soc/gdma/libgdma.so $FSROOT_PATH/usr/lib
     fi
 
     #if [ -f "utils/Overlay/src/librdkcutils.so" ]; then
