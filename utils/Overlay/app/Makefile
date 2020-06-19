@@ -25,6 +25,8 @@ USE_RDKCSTREAM = yes
 USE_LIBSYSWRAPPER = yes
 ifeq ($(BUILD_MODE),WITH_GST)
 USE_GST = yes
+else
+USE_PLUGINS = yes
 endif
 
 include ${RDK_PROJECT_ROOT_PATH}/utility/AppsRule.mak
@@ -37,8 +39,6 @@ CFLAGS  += -I$(RDK_PROJECT_ROOT_PATH)/plugins
 
 ifeq ($(BUILD_MODE),WITH_GST)
 LDFLAGS += -L$(RDK_PROJECT_ROOT_PATH)/plugins/soc -lhalgstrtc
-else
-LDFLAGS += -L$(RDK_PROJECT_ROOT_PATH)/plugins/soc -lhalrtc
 endif
 
 ifeq ($(PLATFORM),S3L)
