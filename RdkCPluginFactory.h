@@ -33,6 +33,10 @@
 
 #include <iostream>
 
+#if defined ( PLUGINS_PLATFORM_RPI )
+#include "RdkCVideoCapturer.h"
+#endif
+
 using namespace std;
 
 
