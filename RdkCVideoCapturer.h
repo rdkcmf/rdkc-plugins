@@ -297,7 +297,7 @@ class RdkCVideoCapturer
 
         /*YUV APIs*/
         virtual int GetSourceBufferConfig(int key_val, void *buf_info)= 0;
-        virtual int ReadYUVData(int key_val, void * yuv_data) = 0;
+        virtual int ReadYUVData(int key_val, void * yuv_data, bool bypass_gdmacopy = false) = 0;
         virtual int ReadMEData(int key_val, void *me_data) = 0;
         virtual int ReadDNMode(void *DN_status)=0;
 	virtual int RdkcVASendInit()=0;
