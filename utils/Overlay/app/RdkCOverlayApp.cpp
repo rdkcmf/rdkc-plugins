@@ -19,6 +19,9 @@
 ##########################################################################
 */
 #include "RdkCOverlayApp.h"
+#ifdef BREAKPAD
+#include "breakpadwrap.h"
+#endif
 
 static OverlayInfo info;			/* OverlayInfo structure object */
 static volatile sig_atomic_t updateOverlay = 1;	/* It is set to 1 as to set Overlay bydefault when the process starts */
@@ -380,7 +383,13 @@ int main(int argc, char **argv)
     int alpha = DEFAULT_OVERLAY_TRANSPARENCY;
     int areaID = DEFAULT_AREA_ID;
     int overlayEnable = -1;
-    //bool ordIsValid = false; 
+    //bool ordIsValid = false;
+
+#ifdef BREAKPAD
+    sleep(1);
+    BreakPadWrapExceptionHandler eh;
+    eh = newBreakPadWrapExceptionHandler();
+#endif
 
     static struct option longOpt[] = {
 	{"streamID", required_argument, 0, 0},

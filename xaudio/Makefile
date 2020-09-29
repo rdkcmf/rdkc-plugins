@@ -30,7 +30,7 @@ CXXFLAGS = $(CFLAGS)
 
 RM = rm -fr
 
-CXXFLAGS += -std=c++14 -fPIC -Wall -Wextra
+CXXFLAGS += -g -std=c++14 -fPIC -Wall -Wextra
 ifeq ($(XCAM_MODEL), SCHC2)
 CXXFLAGS += -DXCAM2
 endif
@@ -39,20 +39,39 @@ TARGET_APP = xaudiotest
 SRCS_APP += main.cpp logger.cpp
 OBJS_APP = $(SRCS_APP:.cpp=.o)
 
-TARGET_LIB = libxaudioapi.so
+RELEASE_TARGET = libxaudioapi.so
+DEBUG_TARGET = libxaudioapi_debug.so
 SRCS_LIB += xaudioapi.cpp logger.cpp
 OBJS_LIB = $(SRCS_LIB:.cpp=.o)
 
-all: $(TARGET_LIB) $(TARGET_APP)
+all: $(RELEASE_TARGET) $(TARGET_APP) $(DEBUG_TARGET) install
 
-$(TARGET_LIB): $(OBJS_LIB)
+$(RELEASE_TARGET): $(OBJS_LIB)
+	$(CXX) -o $(@) --shared $^ $(LDFLAGS)
+	$(STRIP) $(RELEASE_TARGET)
+
+$(DEBUG_TARGET): $(OBJS_LIB)
 	$(CXX) -o $(@) --shared $^ $(LDFLAGS)
 
 $(TARGET_APP): $(OBJS_APP)
 	$(CXX) -o $(@) $^ $(LDFLAGS) -L./ -lxaudioapi
+	$(STRIP) $(TARGET_APP)
 
 %.o:%.cpp
 	$(CXX) -c $< $(CXXFLAGS)  -o $@
 
+install:
+ifeq ($(ENABLE_XSTREAMER), true)
+	echo "xStreamer is enabled, skip copying xaudio library symbols, instead it gets copied from xStreamer repo"
+else
+
+ifneq ($(XCAM_MODEL), XHB1)
+	$(PLATFORM_BREAKPAD_BINARY) $(DEBUG_TARGET) > $(RELEASE_TARGET).sym
+	mv -f $(RELEASE_TARGET).sym  $(PLATFORM_SYMBOL_PATH)
+	echo "Debug symbol created for $(RELEASE_TARGET)"
+endif
+
+endif
+
 clean:
-	$(RM) $(TARGET_LIB) $(OBJS_LIB)  $(TARGET_APP) $(OBJS_APP)
+	$(RM) $(RELEASE_TARGET) $(DEBUG_TARGET) $(OBJS_LIB) $(TARGET_APP) $(OBJS_APP)
