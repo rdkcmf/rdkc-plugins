@@ -25,30 +25,53 @@ USE_RDKC = yes
 SUPPORT_MXML = yes
 USE_SMARTRC = yes
 USE_LIBSYSWRAPPER = yes
+USE_BREAKPAD = yes
 
 include ${RDK_PROJECT_ROOT_PATH}/utility/AppsRule.mak
 LDFLAGS = $(LIBFLAGS)
 CXXFLAGS = $(CFLAGS)
+
+CXXFLAGS += -g
 
 OBJDIR=obj
 
 SMARTRC_SRC=test_smartrc_Amba.c
 SMARTRC_OBJS=$(patsubst %.c, $(OBJDIR)/%.o, $(SMARTRC_SRC))
 
-all: smartrc
+RELEASE_TARGET = smartrc
+DEBUG_TARGET = smartrc_debug
 
+all: $(RELEASE_TARGET) $(DEBUG_TARGET) install
 
 $(OBJDIR)/%.o: %.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	$(CC) -c $(CXXFLAGS) $< -o $@
 
-smartrc: $(SMARTRC_OBJS)
+$(RELEASE_TARGET): $(SMARTRC_OBJS)
+	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
+	$(CC) $(SMARTRC_OBJS) -L. $(LDFLAGS) -o $@
+	$(STRIP) $(RELEASE_TARGET)
+
+$(DEBUG_TARGET): $(SMARTRC_OBJS)
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	$(CC) $(SMARTRC_OBJS) -L. $(LDFLAGS) -o $@
 
+install:
+ifeq ($(ENABLE_XSTREAMER), true)
+	echo "xStreamer is enabled, skip copying smartrc symbols, instead it gets copied from xStreamer repo"
+else
+
+ifneq ($(XCAM_MODEL), XHB1)
+	$(PLATFORM_BREAKPAD_BINARY) $(DEBUG_TARGET) > $(RELEASE_TARGET).sym
+	mv -f $(RELEASE_TARGET).sym  $(PLATFORM_SYMBOL_PATH)
+	echo "Debug symbol created for $(RELEASE_TARGET)"
+endif
+
+endif
+
 clean:
 	rm -rf $(OBJDIR)
-	rm -f smartrc
+	rm -f $(RELEASE_TARGET) $(DEBUG_TARGET)
 
 .PHONY: all clean
 

@@ -41,6 +41,9 @@
 #include "mdet_diff.h"
 #include "datatx_lib.h"
 #include "rdk_debug.h"
+#ifdef BREAKPAD
+#include "breakpadwrap.h"
+#endif
 
 #define NO_ARG (0)
 #define HAS_ARG (1)
@@ -2321,7 +2324,13 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
-        rdk_logger_init("/etc/debug.ini");
+#ifdef BREAKPAD
+	sleep(1);
+	BreakPadWrapExceptionHandler eh;
+	eh = newBreakPadWrapExceptionHandler();
+#endif
+
+	rdk_logger_init("/etc/debug.ini");
 
 	if (init_param(argc, argv) < 0) {
 		return -1;

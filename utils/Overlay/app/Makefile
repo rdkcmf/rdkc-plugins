@@ -28,11 +28,13 @@ USE_GST = yes
 else
 USE_PLUGINS = yes
 endif
+USE_BREAKPAD = yes
 
 include ${RDK_PROJECT_ROOT_PATH}/utility/AppsRule.mak
 LDFLAGS = $(LIBFLAGS)
 
-TARGET :=  rdkc_overlay
+RELEASE_TARGET :=  rdkc_overlay
+DEBUG_TARGET :=  rdkc_overlay_debug
 
 CFLAGS  += -I$(RDK_SOURCE_PATH)/soc/Overlay_src/include
 CFLAGS  += -I$(RDK_PROJECT_ROOT_PATH)/plugins
@@ -45,17 +47,30 @@ ifeq ($(PLATFORM),S3L)
 CFLAGS  += -DS3L
 endif
 
+CFLAGS  += -g
+
 SOURCES := RdkCOverlayApp.cpp
 
 OBJECTS = $(SOURCES:.cpp=.o)
 
-all: $(TARGET)
+all: $(RELEASE_TARGET) $(DEBUG_TARGET) install
 
-$(TARGET):$(OBJECTS)
+$(RELEASE_TARGET):$(OBJECTS)
+	$(CXX) $(LDFLAGS) $^ -o $@
+	$(STRIP) $(RELEASE_TARGET)
+
+$(DEBUG_TARGET):$(OBJECTS)
 	$(CXX) $(LDFLAGS) $^ -o $@
 
 %.o:%.cpp
 	$(CXX) $(CFLAGS) -c $(SOURCES) -o $@
 
+install:
+ifneq ($(XCAM_MODEL), XHB1)
+	$(PLATFORM_BREAKPAD_BINARY) $(DEBUG_TARGET) > $(RELEASE_TARGET).sym
+	mv -f $(RELEASE_TARGET).sym  $(PLATFORM_SYMBOL_PATH)
+	echo "Debug symbol created for $(RELEASE_TARGET)"
+endif
+
 clean:
-	rm -rf $(TARGET) $(OBJECTS)
+	rm -rf $(RELEASE_TARGET) $(OBJECTS)
