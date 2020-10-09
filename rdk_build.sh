@@ -60,8 +60,13 @@ export PLATFORM_SDK=${RDK_TOOLCHAIN_PATH}
 export FSROOT=$RDK_FSROOT_PATH
 export FSROOT_PATH=$RDK_FSROOT_PATH
 
-echo "Disable xStreamer by default"
-export ENABLE_XSTREAMER=false
+if [ "$XCAM_MODEL" == "SCHC2" ] || [ "$XCAM_MODEL" == "XHB1" ]; then
+    echo "Enable xStreamer by default for xCam2 and DBC"
+    export ENABLE_XSTREAMER=true
+else
+    echo "Disable xStreamer by default for xCam and iCam2"
+    export ENABLE_XSTREAMER=false
+fi
 
 # parse arguments
 INITIAL_ARGS=$@
@@ -261,10 +266,10 @@ function install()
     echo "Plugins Installation is done"
 }
 
-function setxStreamer()
+function setHydra()
 {
-    echo "setxStreamer - Enable xStreamer"
-    export ENABLE_XSTREAMER=true
+    echo "setHydra - Disable xStreamer"
+    export ENABLE_XSTREAMER=false
 }
 
 # run the logic
@@ -273,7 +278,7 @@ HIT=false
 
 for i in "$@"; do
     case $i in
-        enablexStreamer)  HIT=true; setxStreamer ;;
+        enableHydra)  HIT=true; setHydra ;;
         configure)  HIT=true; configure ;;
         clean)      HIT=true; clean ;;
         build)      HIT=true; build ;;
