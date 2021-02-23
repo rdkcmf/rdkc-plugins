@@ -222,6 +222,10 @@ function install()
        cp -R utils/Overlay/app/rdkc_overlay $RDK_PROJECT_ROOT_PATH/sdk/fsroot/src//vendor/img/fs/shadow_root/usr/local/bin/
     fi
 
+    if [ -f "utils/Overlay/app/overlay.ini" ];then
+       cp -R utils/Overlay/app/overlay.ini $FSROOT_PATH/etc/rfcdefaults/
+    fi
+
     if [ -f "soc/Overlay_src/img/xfinity_logo.bmp" ]; then
 	cp -R soc/Overlay_src/img/xfinity_logo.bmp $FSROOT_PATH/etc
     fi
