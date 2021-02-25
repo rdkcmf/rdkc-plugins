@@ -238,6 +238,18 @@ function install()
         cp -R soc/Overlay_src/img/cox.bmp $FSROOT_PATH/etc
     fi
 
+    if [ -f "soc/Overlay_src/img/helix_logo.bmp" ]; then
+	cp -R soc/Overlay_src/img/helix_logo.bmp $FSROOT_PATH/etc
+    fi
+
+    if [ -f "soc/Overlay_src/img/helix_logo_1080p.bmp" ]; then
+        cp -R soc/Overlay_src/img/helix_logo_1080p.bmp $FSROOT_PATH/etc
+    fi
+
+    if [ -f "soc/Overlay_src/img/helix_logo_360p.bmp" ]; then
+        cp -R soc/Overlay_src/img/helix_logo_360p.bmp $FSROOT_PATH/etc
+    fi
+
     #if [ -f "gst/libgstrtc.so" ]; then
     #   cp -R gst/libgstrtc.so $FSROOT_PATH/usr/lib
     #fi
