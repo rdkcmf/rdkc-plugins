@@ -22,6 +22,7 @@ INSTALL = install
 
 # Add dependent libraries
 USE_AAC = yes
+USE_TELEMETRY_2 = yes
 SUPPORT_MXML = yes
 
 include ${RDK_PROJECT_ROOT_PATH}/utility/AppsRule.mak
